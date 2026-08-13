@@ -1,0 +1,26 @@
+ ▐▛███▜▌   Claude Code v2.1.226
+▝▜█████▛▘  minimax-m3:cloud[1m] · API Usage Billing
+  ▘▘ ▝▝    ~\OneDrive\Desktop\expense-tracker
+
+
+❯ /model                                                                        
+  ⎿  Set model to minimax-m3:cloud and saved as your default for new sessions
+
+❯ /usage 
+  ⎿  Settings dialog dismissed
+
+❯ /export note.md                                                               
+  ⎿  Conversation exported to:
+     C:\Users\rudi3\OneDrive\Desktop\expense-tracker\note.md
+
+❯ /usage 
+  ⎿  Stats dialog dismissed
+
+❯ /usage 
+  ⎿  Stats dialog dismissed
+
+❯ /config 
+  ⎿  Config dialog dismissed
+
+❯ /permissions                                                                  
+  ⎿  Added allow rule WebSearch
