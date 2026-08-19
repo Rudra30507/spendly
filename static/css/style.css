@@ -728,3 +728,106 @@ a { color: inherit; text-decoration: none; }
     .legal-page { padding: 2rem 1rem; }
     .legal-inner { padding: 1.5rem; }
 }
+
+/* ------------------------------------------------------------------ */
+/* Video Modal                                                         */
+/* ------------------------------------------------------------------ */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 15, 15, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.modal-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-container {
+    position: relative;
+    background: var(--paper-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    max-width: 900px;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2);
+    transform: scale(0.95);
+    transition: transform 0.25s ease;
+}
+
+.modal-overlay.is-open .modal-container {
+    transform: scale(1);
+}
+
+.modal-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(15, 15, 15, 0.8);
+    color: var(--paper);
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.modal-close:hover {
+    background: var(--ink);
+    transform: scale(1.1);
+}
+
+.modal-close:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.modal-content {
+    width: 100%;
+    height: 100%;
+}
+
+.modal-content iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+    .modal-overlay {
+        padding: 1rem;
+    }
+
+    .modal-container {
+        aspect-ratio: 16 / 9;
+        border-radius: var(--radius-md);
+    }
+
+    .modal-close {
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 36px;
+        height: 36px;
+        font-size: 1.25rem;
+    }
+}

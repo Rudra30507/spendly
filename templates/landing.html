@@ -20,7 +20,7 @@
         </p>
         <div class="hero-actions">
             <a href="{{ url_for('register') }}" class="btn-primary">Create free account</a>
-            <a href="#" class="btn-secondary">See how it works</a>
+            <button type="button" class="btn-secondary" id="demo-trigger">See how it works</button>
         </div>
     </div>
     <div class="hero-visual">
@@ -101,4 +101,68 @@
     </div>
 </section>
 
+<!-- Video Modal -->
+<div class="modal-overlay" id="video-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-container">
+        <button type="button" class="modal-close" id="modal-close" aria-label="Close video">&times;</button>
+        <div class="modal-content">
+            <iframe
+                id="modal-video"
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1&rel=0"
+                title="Spendly demo video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    (function() {
+        const modal = document.getElementById('video-modal');
+        const trigger = document.getElementById('demo-trigger');
+        const closeBtn = document.getElementById('modal-close');
+        const iframe = document.getElementById('modal-video');
+
+        if (!modal || !trigger || !closeBtn || !iframe) return;
+
+        function openModal() {
+            modal.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+            // Focus trap: focus the close button
+            closeBtn.focus();
+        }
+
+        function closeModal() {
+            modal.classList.remove('is-open');
+            document.body.style.overflow = '';
+            // Stop video by resetting src
+            const src = iframe.src;
+            iframe.src = '';
+            iframe.src = src;
+            // Return focus to trigger
+            trigger.focus();
+        }
+
+        trigger.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+
+        // Close on overlay click (outside container)
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('is-open')) {
+                closeModal();
+            }
+        });
+    })();
+</script>
 {% endblock %}
