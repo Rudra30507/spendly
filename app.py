@@ -1,7 +1,9 @@
-from flask import Flask, render_template
-from database.db import get_db, init_db, seed_db
+import os
+from flask import Flask, render_template, request, redirect, session, url_for
+from database.db import get_db, init_db, seed_db, create_user
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("SPENDLY_SECRET_KEY", "dev-secret-change-me")
 
 
 # ------------------------------------------------------------------ #
@@ -13,8 +15,40 @@ def landing():
     return render_template("landing.html")
 
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
+    if request.method == "POST":
+        name = (request.form.get("name") or "").strip()
+        email = (request.form.get("email") or "").strip()
+        password = request.form.get("password") or ""
+
+        # Validation
+        if not name:
+            return render_template("register.html",
+                                   error="Name is required.",
+                                   name=name, email=email), 400
+        if not email:
+            return render_template("register.html",
+                                   error="Email is required.",
+                                   name=name, email=email), 400
+        if not password:
+            return render_template("register.html",
+                                   error="Password is required.",
+                                   name=name, email=email), 400
+
+        # Create user
+        try:
+            user_id = create_user(name, email, password)
+        except ValueError as e:
+            return render_template("register.html",
+                                   error=str(e),
+                                   name=name, email=email), 400
+
+        # Log in via session
+        session["user_id"] = user_id
+        return redirect(url_for("profile"))
+
+    # GET — render empty form
     return render_template("register.html")
 
 
