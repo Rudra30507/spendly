@@ -8,3 +8,5 @@
 
 ❯ /usage 
   ⎿  Settings dialog dismissed
+
+  /ultraplan mode when you do not satisfied with output
