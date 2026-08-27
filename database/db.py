@@ -1,6 +1,6 @@
 import sqlite3
 from datetime import datetime, timedelta
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 DB_PATH = "expense_tracker.db"
@@ -126,5 +126,35 @@ def create_user(name: str, email: str, password: str) -> int:
         return cursor.lastrowid
     except sqlite3.IntegrityError:
         raise ValueError("Email already registered")
+    finally:
+        conn.close()
+
+
+def verify_user(email: str, password: str) -> int | None:
+    """Return user id on successful sign-in, else None. Same None for unknown email and wrong password."""
+    email = email.strip().lower()
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT id, password_hash FROM users WHERE email = ?",
+            (email,),
+        ).fetchone()
+        if row is None:
+            return None
+        if not check_password_hash(row["password_hash"], password):
+            return None
+        return row["id"]
+    finally:
+        conn.close()
+
+
+def get_user_by_id(user_id: int):
+    """Return the user row (sqlite3.Row) for user_id, or None if not found."""
+    conn = get_db()
+    try:
+        return conn.execute(
+            "SELECT id, name, email, created_at FROM users WHERE id = ?",
+            (user_id,),
+        ).fetchone()
     finally:
         conn.close()

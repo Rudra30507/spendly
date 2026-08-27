@@ -1,9 +1,29 @@
 import os
+from types import SimpleNamespace
 from flask import Flask, render_template, request, redirect, session, url_for
-from database.db import get_db, init_db, seed_db, create_user
+from database.db import get_db, init_db, seed_db, create_user, verify_user, get_user_by_id
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SPENDLY_SECRET_KEY", "dev-secret-change-me")
+
+
+def _current_user():
+    """Return a user object with .is_authenticated, .id, .name, .email — or None."""
+    uid = session.get("user_id")
+    if uid is None:
+        return None
+    row = get_user_by_id(uid)
+    if row is None:
+        return None
+    return SimpleNamespace(
+        is_authenticated=True,
+        id=row["id"],
+        name=row["name"],
+        email=row["email"],
+    )
+
+
+app.context_processor(lambda: {"current_user": _current_user()})
 
 
 # ------------------------------------------------------------------ #
@@ -17,6 +37,10 @@ def landing():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    # Already signed in? Bounce to /profile.
+    if session.get("user_id"):
+        return redirect(url_for("profile"))
+
     if request.method == "POST":
         name = (request.form.get("name") or "").strip()
         email = (request.form.get("email") or "").strip()
@@ -52,8 +76,34 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
+    # Already signed in? Bounce to /profile.
+    if session.get("user_id"):
+        return redirect(url_for("profile"))
+
+    if request.method == "POST":
+        email = (request.form.get("email") or "").strip()
+        password = request.form.get("password") or ""
+
+        if not email:
+            return render_template("login.html",
+                                   error="Email is required.",
+                                   email=email), 400
+        if not password:
+            return render_template("login.html",
+                                   error="Password is required.",
+                                   email=email), 400
+
+        user_id = verify_user(email, password)
+        if user_id is None:
+            return render_template("login.html",
+                                   error="Invalid email or password.",
+                                   email=email), 400
+
+        session["user_id"] = user_id
+        return redirect(url_for("profile"))
+
     return render_template("login.html")
 
 
@@ -73,7 +123,8 @@ def privacy():
 
 @app.route("/logout")
 def logout():
-    return "Logout — coming in Step 3"
+    session.clear()
+    return redirect(url_for("landing"))
 
 
 @app.route("/profile")
