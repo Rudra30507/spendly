@@ -1,0 +1,115 @@
+ ▐▛███▜▌   Claude Code v2.1.226
+▝▜█████▛▘  minimax-m3:cloud[1m] · API Usage Billing
+  ▘▘ ▝▝    ~\OneDrive\Desktop\expense-tracker
+
+
+❯ /model                                                                        
+  ⎿  Set model to minimax-m3:cloud and saved as your default for new sessions
+
+❯ /usage 
+  ⎿  Settings dialog dismissed
+
+❯ /export note.md                                                               
+  ⎿  Conversation exported to:
+     C:\Users\rudi3\OneDrive\Desktop\expense-tracker\note.md
+
+❯ /usage 
+  ⎿  Stats dialog dismissed
+
+❯ /usage 
+  ⎿  Stats dialog dismissed
+
+❯ /config 
+  ⎿  Config dialog dismissed
+
+❯ /permissions                                                                  
+  ⎿  Added allow rule WebSearch
+
+  #Contex window
+
+  amount of informations in tockens that a model like claude code can see and remember i one time while generating a response 
+  think of it as models working memory
+  -the max amount of context the model can hold at once is calld context window
+  -claude code ka context windows - 200k
+  -each new sesion starts with reseated context window
+  -input and output tockens are also calculated in context windows
+  -output = 6x input
+  -these llms dont have own memory toh jab ham new req send karte hain tab poorani history ko chalte hue wo tockens khata hain 
+-subagent got their own isolation level completely saperate from main session and retruns summary tockens not whole chat 
+
+  #contex is all info to understanding something correctly
+
+❯ /context 
+  ⎿  Context Usage
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   nvidia/nemotron-3-ultra-550b-a55b:free
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁   76k/200k tokens (38%)
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ 
+     ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛁ ⛶   Estimated usage by category
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ System prompt: 1.7k tokens (0.9%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ System tools: 10k tokens (5.0%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ Skills: 1.5k tokens (0.7%)
+     ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶ ⛶   ⛁ Messages: 64k tokens (32.0%)
+     ⛶ ⛶ ⛶ ⛝ ⛝ ⛝ ⛝ ⛝ ⛝ ⛝   ⛶ Free space: 89.8k (44.9%)
+     ⛝ ⛝ ⛝ ⛝ ⛝ ⛝ ⛝ ⛝ ⛝ ⛝   ⛝ Autocompact buffer: 33k tokens (16.5%)
+
+     Auto-compact window: 200k tokens (default for an unrecognized model)
+
+     MCP tools · /mcp
+     ├ mcp__ide__executeCode: 0 tokens
+     └ mcp__ide__getDiagnostics: 0 tokens
+
+     Skills · /skills
+
+     Built-in
+     ├ dataviz: ~380 tokens
+     ├ claude-api: ~360 tokens
+     ├ update-config: ~240 tokens
+     ├ run: ~120 tokens
+     ├ loop: ~110 tokens
+     ├ keybindings-help: ~80 tokens
+     ├ fewer-permission-prompts: ~60 tokens
+     ├ simplify: ~60 tokens
+     ├ security-review: ~30 tokens
+     └ init: ~20 tokens
+
+      Suggestions
+      ℹ File reads using 13.1k tokens (7%) → save ~3.9k
+        If you are re-reading files, consider referencing earlier reads. Use offset/limit for large files.
+/
+how we cam preserve it??
+
+1.auto-compaction : generates the summary by own and  stores in 33k tockens (summary) and makes free to conversation history till 33k tockens remains
+claude auto generate this work for this and when 75 to 90 5 of tockens remains then , this is called auto compaction and ths auto compact does summary fro perticulat
+
+#claude.md
+
+/init
+
+-ideal claude.md
+what is modefying and deploying and whats the context of that?
+-explain structure konsi line kahaa belong karti hain? etc etc  konse route main kya exist karta hain 
+-codeStyle
+-prefered lib and frameworks
+-ren, test and deploy commands 
+-database.py
+
+claude.md - 
+Project-level : .claude/ - scopedto one project it stores gobally with all team members
+global / user-level : scoped to machine , applies to every project , person to you 
+
+/spec driven- development
+
+in vibe code we lose so much controlls .... in short
+like you have to build auth page , in vibe code you have to tell just "build the auth page" 
+insted doing this thing give it specs driven doc. where you will give to it a whole doc. of detail like from which platform , which king of password you need etc etc..
+
+//ex.
+problem statement
+fxnal req.
+ip - op / api contract
+constrains
+edge cases and error handling
+acceptance critarea
+
+spec-doc --> review --> design --> review --> tasks --> build --> validate
+

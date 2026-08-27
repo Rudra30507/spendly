@@ -1,0 +1,20 @@
+
+start a new claude session
+rename the session to ‘database setup’
+Pull the most recent code - git pull origin main
+Create and switch to a new branch - git checkout -b feature/database-setup
+Create Spec document manually
+Review the spec document
+Save the spec document in .claude/specs folder by the name of 01-database-setup.md
+Enter Plan mode and create a plan based on the spec document
+Read .claude/specs/01-database-setup.md and the existing database/db.py and app.py, then generate an implementation plan.Save this plan to .claude/plans/01-database-setup.md
+Implement the plan - review edits manually
+Validate the implementation against the spec document
+Iterate if required
+commit the changes 
+git add .
+git commit -m ‘database setup’
+Push the code to Github - git push origin feature/database-setup 
+Create and merge the PR
+Checkout to the main branch - git checkout main
+Delete the feature branch - git branch -D feature/database-setup
