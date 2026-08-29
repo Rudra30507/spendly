@@ -113,5 +113,8 @@ acceptance critarea
 
 spec-doc --> review --> design --> review --> tasks --> build --> validate
 
+//subagents
 
+specialized Ai agents they runs isolately and they have their own context window - doing heavyly in a separate space and handeling back only waht matter 
+/
 

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile - Spendly</title>
+</head>
+<body>
+    {% extends "base.html" %}
+
+    {% block title %}My Profile{% endblock %}
+
+    {% block content %}
+    <main class="profile-container">
+        <header class="profile-header">
+            <div class="user-card">
+                <div class="avatar">{{ user.name[0] if user else 'U' }}</div>
+                <div class="user-details">
+                    <h1>{{ user.name if user else 'User Name' }}</h1>
+                    <p class="email">{{ user.email if user else 'email@example.com' }}</p>
+                    <p class="member-since">Member since {{ user.member_since if user else 'January 2026' }}</p>
+                </div>
+            </div>
+        </header>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <span class="label">Total Spent</span>
+                <span class="value">₹{{ "{:,.2f}".format(stats.total_spent) if stats else "0.00" }}</span>
+            </div>
+            <div class="stat-card">
+                <span class="label">Transactions</span>
+                <span class="value">{{ stats.transaction_count if stats else 0 }}</span>
+            </div>
+            <div class="stat-card">
+                <span class="label">Top Category</span>
+                <span class="value">{{ stats.top_category if stats else "—" }}</span>
+            </div>
+        </section>
+
+        <section class="profile-main">
+            <div class="transactions-section">
+                <h2>Recent Transactions</h2>
+                <table class="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tx in transactions %}
+                        <tr>
+                            <td>{{ tx.date }}</td>
+                            <td>{{ tx.description }}</td>
+                            <td><span class="category-badge {{ tx.category.lower() }}">{{ tx.category }}</span></td>
+                            <td class="amount">₹{{ "{:,.2f}".format(tx.amount) }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="empty-msg">No transactions yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="breakdown-section">
+                <h2>Category Breakdown</h2>
+                <div class="breakdown-list">
+                    {% for cat in categories %}
+                    <div class="breakdown-item">
+                        <div class="breakdown-info">
+                            <span class="cat-name">{{ cat.name }}</span>
+                            <span class="cat-amount">₹{{ "{:,.2f}".format(cat.amount) }}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill {{ cat.name.lower() }}" style="width: {{ cat.pct }}%"></div>
+                        </div>
+                        <span class="cat-pct">{{ cat.pct }}%</span>
+                    </div>
+                    {% else %}
+                    <p class="empty-msg">No data available.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+    {% endblock %}
+</body>
+</html>
